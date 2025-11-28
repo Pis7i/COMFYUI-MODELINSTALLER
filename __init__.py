@@ -1,10 +1,16 @@
 from .model_downloader import NODE_CLASS_MAPPINGS, NODE_DISPLAY_NAME_MAPPINGS, WEB_DIRECTORY, download_handler
+from .shutdown_monitor import shutdown_status_handler, shutdown_toggle_handler, activity_ping_handler
 import server
 
 try:
     if hasattr(server.PromptServer, 'instance') and server.PromptServer.instance is not None:
-        server.PromptServer.instance.routes.post("/model_installer/download")(download_handler)
+        routes = server.PromptServer.instance.routes
+        routes.post("/model_installer/download")(download_handler)
+        routes.get("/pma_utils/shutdown_status")(shutdown_status_handler)
+        routes.post("/pma_utils/shutdown_toggle")(shutdown_toggle_handler)
+        routes.post("/pma_utils/activity_ping")(activity_ping_handler)
+        print("[PMA Utils] All routes registered successfully")
 except Exception as e:
-    print(f"[ModelInstaller] Warning: Could not register route immediately: {e}")
+    print(f"[PMA Utils] Warning: Could not register routes immediately: {e}")
 
 __all__ = ['NODE_CLASS_MAPPINGS', 'NODE_DISPLAY_NAME_MAPPINGS', 'WEB_DIRECTORY']
