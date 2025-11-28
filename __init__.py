@@ -1,6 +1,15 @@
-from .model_downloader import NODE_CLASS_MAPPINGS, NODE_DISPLAY_NAME_MAPPINGS, WEB_DIRECTORY, download_handler
+from .model_downloader import NODE_CLASS_MAPPINGS as MODEL_NODES, NODE_DISPLAY_NAME_MAPPINGS as MODEL_NAMES, WEB_DIRECTORY, download_handler
 from .shutdown_monitor import shutdown_status_handler, shutdown_toggle_handler, activity_ping_handler, shutdown_monitor
+from .character_swap_node import NODE_CLASS_MAPPINGS as CHAR_NODES, NODE_DISPLAY_NAME_MAPPINGS as CHAR_NAMES
 import server
+
+NODE_CLASS_MAPPINGS = {}
+NODE_CLASS_MAPPINGS.update(MODEL_NODES)
+NODE_CLASS_MAPPINGS.update(CHAR_NODES)
+
+NODE_DISPLAY_NAME_MAPPINGS = {}
+NODE_DISPLAY_NAME_MAPPINGS.update(MODEL_NAMES)
+NODE_DISPLAY_NAME_MAPPINGS.update(CHAR_NAMES)
 
 try:
     if hasattr(server.PromptServer, 'instance') and server.PromptServer.instance is not None:
@@ -14,6 +23,7 @@ try:
         
         print("[PMA Utils] All routes registered successfully")
         print("[PMA Utils] Shutdown monitor initialized with queue tracking")
+        print("[PMA Utils] Character swap nodes loaded")
 except Exception as e:
     print(f"[PMA Utils] Warning: Could not register routes immediately: {e}")
 
