@@ -13,9 +13,33 @@ class ShutdownMonitor:
         self.timeout = 600
         self.monitor_thread = None
         self.running = False
+        self.prompt_server = None
+        
+    def set_prompt_server(self, server):
+        self.prompt_server = server
         
     def reset_timer(self):
         self.last_activity = time.time()
+    
+    def is_queue_active(self):
+        if not self.prompt_server:
+            return False
+            
+        try:
+            queue_info = self.prompt_server.prompt_queue.get_queue_info()
+            
+            queue_pending = queue_info.get('queue_pending', [])
+            queue_running = queue_info.get('queue_running', [])
+            
+            has_items = len(queue_pending) > 0 or len(queue_running) > 0
+            
+            if has_items:
+                self.reset_timer()
+                
+            return has_items
+        except Exception as e:
+            print(f"[PMA Utils] Error checking queue: {e}")
+            return False
     
     def get_time_remaining(self):
         if not self.enabled:
@@ -43,10 +67,12 @@ class ShutdownMonitor:
     def _monitor_loop(self):
         while self.running:
             if self.enabled:
+                self.is_queue_active()
+                
                 time_remaining = self.get_time_remaining()
                 
                 if time_remaining <= 0:
-                    print("[PMA Utils] Inactivity timeout reached. Shutting down RunPod...")
+                    print("[PMA Utils] Queue empty for 10 minutes. Shutting down RunPod...")
                     self._shutdown_runpod()
                     break
             
