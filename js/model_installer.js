@@ -1,8 +1,14 @@
 import { app } from "../../scripts/app.js";
 import { api } from "../../scripts/api.js";
 
+console.log("[ModelInstaller] Loading extension...");
+
 app.registerExtension({
     name: "ModelInstaller",
+    
+    async setup() {
+        console.log("[ModelInstaller] Extension setup called");
+    },
     
     commands: [
         {
@@ -147,8 +153,10 @@ app.registerExtension({
     
     menuCommands: [
         {
-            path: ["Model Manager"],
+            path: ["Extensions"],
             commands: ["installModels"]
         }
     ]
 });
+
+console.log("[ModelInstaller] Extension registered successfully");
