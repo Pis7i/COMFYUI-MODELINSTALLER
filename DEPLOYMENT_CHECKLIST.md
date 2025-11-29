@@ -36,7 +36,7 @@
 
 ### Step 1: Install MediaPipe
 ```bash
-pip install mediapipe==0.10.24
+pip install mediapipe==0.10.21
 ```
 
 ### Step 2: Verify Installation
@@ -243,7 +243,7 @@ Tests cover:
 2. **Install Dependencies**
    ```bash
    cd /path/to/ComfyUI
-   pip install mediapipe==0.10.24
+   pip install mediapipe==0.10.21
    ```
 
 3. **Test Installation**
@@ -425,7 +425,7 @@ If critical issues are discovered:
 ---
 
 **Next Steps**:
-1. Install MediaPipe: `pip install mediapipe==0.10.24`
+1. Install MediaPipe: `pip install mediapipe==0.10.21`
 2. Run test suite: `python test_eye_stabilizer.py`
 3. Integrate into workflow
 4. Test with real videos

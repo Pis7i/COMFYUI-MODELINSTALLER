@@ -57,13 +57,13 @@ The node requires **MediaPipe** for face detection:
 
 ```bash
 # From your ComfyUI directory
-pip install mediapipe==0.10.24
+pip install mediapipe==0.10.21
 ```
 
 Or if using the venv_sync system:
 ```bash
 # Add to comfypips/requirements.txt (already done)
-mediapipe==0.10.24
+mediapipe==0.10.21
 ```
 
 ### 2. Node Location
@@ -279,7 +279,7 @@ EAR = (||p2-p6|| + ||p3-p5||) / (2 * ||p1-p4||)
 
 **Solution**: Install MediaPipe
 ```bash
-pip install mediapipe==0.10.24
+pip install mediapipe==0.10.21
 ```
 
 ### Issue: Eyes still glitching

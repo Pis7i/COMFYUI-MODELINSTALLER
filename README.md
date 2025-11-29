@@ -56,7 +56,7 @@ Or manually copy the `ComfyUI-ModelInstaller` folder to your `custom_nodes` dire
 ### For Eye Stabilizer Node
 - MediaPipe (for face detection):
   ```bash
-  pip install mediapipe==0.10.24
+  pip install mediapipe==0.10.21
   ```
   - If not installed, node falls back to basic mode without face tracking
 

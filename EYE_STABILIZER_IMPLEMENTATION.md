@@ -189,7 +189,7 @@ print("[PMA Utils] Eye stabilizer node loaded")
 **File**: `comfypips/requirements.txt`  
 **Added**:
 ```
-mediapipe==0.10.24
+mediapipe==0.10.21
 ```
 
 **Existing Dependencies Used**:
@@ -355,7 +355,7 @@ Eye Stabilizer (output) → Node 60 (Pose)
 
 ### Required
 ```
-mediapipe==0.10.24  [NEW - added for this feature]
+mediapipe==0.10.21  [NEW - added for this feature]
 ```
 
 ### Already Available

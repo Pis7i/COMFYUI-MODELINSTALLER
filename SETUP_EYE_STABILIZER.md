@@ -17,7 +17,7 @@ source venv/bin/activate  # Linux/Mac
 venv\Scripts\activate     # Windows
 
 # Install MediaPipe
-pip install mediapipe==0.10.24
+pip install mediapipe==0.10.21
 ```
 
 #### Method B: Using requirements.txt (Already added)
