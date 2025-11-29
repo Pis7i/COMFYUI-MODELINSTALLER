@@ -1,0 +1,11 @@
+# ComfyUI-ModelInstaller Requirements
+# These are additional dependencies needed for PMA Utils custom nodes
+
+# Eye Stabilizer Node - Face detection and tracking
+mediapipe==0.10.24
+
+# Already available in ComfyUI but listed for reference:
+# torch
+# numpy
+# opencv-python
+# pillow

@@ -1,14 +1,25 @@
-# ComfyUI Model Installer
+# ComfyUI Model Installer + PMA Utils
 
-A ComfyUI extension that adds a convenient "Install Models" button to the topbar menu for easy model downloads.
+A comprehensive ComfyUI extension pack featuring model management, video processing utilities, and custom nodes.
 
 ## Features
 
+### Model Management
 - One-click model installation from the ComfyUI interface
 - Real-time download progress in a dedicated window
 - Automatically organizes models into their correct folders
 - Resumes interrupted downloads
 - Skips already downloaded models
+
+### Video Processing Nodes
+- **Eye Stabilizer**: Fixes eye glitching in video motion transfer workflows (Wan2.2, etc.)
+- **Character Swap**: ControlNet-based character face swapping
+- Temporal smoothing and enhancement tools
+
+### System Utilities
+- Automatic shutdown monitoring with queue detection
+- Activity tracking to prevent premature shutdowns
+- ComfyUI session management tools
 
 ## Installation
 
@@ -37,9 +48,17 @@ Or manually copy the `ComfyUI-ModelInstaller` folder to your `custom_nodes` dire
 
 ## Requirements
 
+### Core Requirements
 - wget must be installed on your system
   - **Linux/Mac**: Usually pre-installed
   - **Windows**: Install via [chocolatey](https://chocolatey.org/): `choco install wget`
+
+### For Eye Stabilizer Node
+- MediaPipe (for face detection):
+  ```bash
+  pip install mediapipe==0.10.24
+  ```
+  - If not installed, node falls back to basic mode without face tracking
 
 ## Models Included
 
@@ -81,6 +100,56 @@ MODELS = [
 - Check your internet connection
 - Verify the URLs are still valid
 - Ensure you have sufficient disk space
+
+## Custom Nodes Documentation
+
+### Eye Stabilizer
+Fixes eye glitching, jittering, and unnatural blinking in video motion transfer workflows.
+
+**Full Documentation**: [EYE_STABILIZER_README.md](EYE_STABILIZER_README.md)  
+**Setup Guide**: [SETUP_EYE_STABILIZER.md](SETUP_EYE_STABILIZER.md)  
+**Technical Details**: [EYE_STABILIZER_IMPLEMENTATION.md](EYE_STABILIZER_IMPLEMENTATION.md)
+
+**Features**:
+- Dense eye landmark detection (478 facial points via MediaPipe)
+- Temporal smoothing using Kalman filtering
+- Blink detection and synthesis
+- Eye region enhancement
+- Debug visualization
+
+**Quick Start**:
+```
+Video → RMBG → [Eye Stabilizer] → DWPose/Depth → WanVaceToVideo
+```
+
+**Test Installation**:
+```bash
+python test_eye_stabilizer.py
+```
+
+### Character Swap
+ControlNet-based character face swapping for pose/scene transfer.
+
+**Status**: Basic implementation (preprocessors only)  
+**Planned**: Full IP-Adapter FaceID integration
+
+## Project Structure
+
+```
+ComfyUI-ModelInstaller/
+├── __init__.py                          # Main entry point
+├── model_downloader.py                  # Model download system
+├── shutdown_monitor.py                  # Auto-shutdown utilities
+├── character_swap_node.py              # Character swap node
+├── eye_stabilizer_node.py              # Eye stabilizer node (NEW)
+├── test_eye_stabilizer.py              # Test suite (NEW)
+├── README.md                            # This file
+├── EYE_STABILIZER_README.md            # Eye stabilizer docs
+├── SETUP_EYE_STABILIZER.md             # Setup guide
+├── EYE_STABILIZER_IMPLEMENTATION.md    # Technical docs
+└── js/
+    └── model_installer.js               # Frontend UI
+```
 
 ## License
 
