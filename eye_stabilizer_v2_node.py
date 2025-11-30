@@ -123,9 +123,11 @@ class AdaptiveBlinkDetector:
     """
     Adaptive blink detector with auto-calibration.
     Learns the person's baseline eye opening from the video.
+    Supports blink suppression mode to reduce excessive blinking from Wan2.2.
     """
     
-    def __init__(self, history_size=5, threshold=0.2, ethnicity_preset=None):
+    def __init__(self, history_size=5, threshold=0.2, ethnicity_preset=None, 
+                 blink_suppression=False, min_blink_duration=3):
         self.history_size = history_size
         self.threshold = threshold
         self.ear_history = deque(maxlen=history_size)
@@ -133,6 +135,12 @@ class AdaptiveBlinkDetector:
         self.calibration_samples = []
         self.calibrated = False
         self.ethnicity_preset = ethnicity_preset
+        
+        # Blink suppression features
+        self.blink_suppression = blink_suppression
+        self.min_blink_duration = min_blink_duration  # Minimum frames for valid blink
+        self.blink_counter = 0  # Consecutive blink frames
+        self.forced_open_ear = None  # EAR to maintain when suppressing
         
     def calculate_ear(self, eye_landmarks):
         """
@@ -181,13 +189,14 @@ class AdaptiveBlinkDetector:
         """
         Detect if a blink is occurring.
         Uses adaptive threshold if calibrated, otherwise uses preset.
+        Includes blink suppression logic to reduce excessive blinking.
         
         Args:
             left_ear: Left eye aspect ratio
             right_ear: Right eye aspect ratio
             
         Returns:
-            bool: True if blink detected
+            bool: True if blink detected (and allowed)
         """
         avg_ear = (left_ear + right_ear) / 2.0
         
@@ -200,13 +209,31 @@ class AdaptiveBlinkDetector:
         if len(self.ear_history) < self.history_size:
             return False
         
-        # Adaptive detection if calibrated
+        # Determine if technically blinking
+        is_blinking_raw = False
         if self.calibrated and self.baseline_ear:
-            return avg_ear < (self.baseline_ear * (1 - self.threshold))
+            is_blinking_raw = avg_ear < (self.baseline_ear * (1 - self.threshold))
+        else:
+            avg_historical = sum(self.ear_history) / len(self.ear_history)
+            is_blinking_raw = avg_ear < (avg_historical * (1 - self.threshold))
         
-        # Standard detection
-        avg_historical = sum(self.ear_history) / len(self.ear_history)
-        return avg_ear < (avg_historical * (1 - self.threshold))
+        # Blink suppression logic
+        if self.blink_suppression:
+            if is_blinking_raw:
+                self.blink_counter += 1
+                
+                # Only allow blink if it's sustained for minimum duration
+                # This filters out micro-blinks from Wan2.2 jitter
+                if self.blink_counter >= self.min_blink_duration:
+                    return True  # Valid blink
+                else:
+                    return False  # Suppress - too short, likely noise
+            else:
+                # Reset counter when eyes open
+                self.blink_counter = 0
+                return False
+        
+        return is_blinking_raw
     
     def smooth_blink(self, current_ear, is_blinking):
         """
@@ -280,6 +307,10 @@ class EyeStabilizerV2Node:
                     "label_on": "Enabled",
                     "label_off": "Disabled"
                 }),
+                "blink_suppression_mode": (["off", "light", "moderate", "aggressive"], {
+                    "default": "off",
+                    "tooltip": "Reduce excessive blinking from Wan2.2 (off=normal, light=filter 1-2 frame blinks, moderate=3+ frames, aggressive=5+ frames)"
+                }),
             },
             "optional": {
                 "smoothing_override": ("FLOAT", {
@@ -322,7 +353,7 @@ class EyeStabilizerV2Node:
     CATEGORY = "PMA Utils/Video Processing"
     
     def stabilize_eyes(self, images, ethnicity_preset, enable_temporal_smoothing,
-                      enable_blink_detection, enable_eye_enhancement,
+                      enable_blink_detection, enable_eye_enhancement, blink_suppression_mode,
                       smoothing_override=-1.0, enhancement_override=-1.0,
                       blink_threshold_override=-1.0, eye_region_dilation=10):
         """
@@ -338,17 +369,29 @@ class EyeStabilizerV2Node:
         enhancement_strength = enhancement_override if enhancement_override >= 0 else preset["enhancement_strength"]
         blink_threshold = blink_threshold_override if blink_threshold_override >= 0 else preset["blink_threshold"]
         
+        # Configure blink suppression
+        blink_suppression_settings = {
+            "off": (False, 0),
+            "light": (True, 2),      # Filter 1-2 frame micro-blinks
+            "moderate": (True, 3),   # Filter 1-3 frame blinks
+            "aggressive": (True, 5)  # Only allow 5+ frame sustained blinks
+        }
+        suppress_enabled, min_duration = blink_suppression_settings[blink_suppression_mode]
+        
         print(f"[EyeStabilizer V2] Processing {images.shape[0]} frames...")
         print(f"[EyeStabilizer V2] Preset: {preset['name']}")
         print(f"[EyeStabilizer V2] Smoothing: {smoothing_strength:.2f}")
         print(f"[EyeStabilizer V2] Enhancement: {enhancement_strength:.2f}")
         print(f"[EyeStabilizer V2] Blink Threshold: {blink_threshold:.2f}")
+        print(f"[EyeStabilizer V2] Blink Suppression: {blink_suppression_mode} (min {min_duration} frames)")
         
         # Reset state for new sequence
         self.landmark_filters = {}
         self.blink_detector = AdaptiveBlinkDetector(
             threshold=blink_threshold,
-            ethnicity_preset=ethnicity_preset
+            ethnicity_preset=ethnicity_preset,
+            blink_suppression=suppress_enabled,
+            min_blink_duration=min_duration
         )
         
         # Process frames
