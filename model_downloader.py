@@ -46,6 +46,76 @@ class ModelDownloader:
             "url": "https://www.dropbox.com/scl/fi/h0pi6xyjozna49kophedo/ng_deepnegative_v1_75t.pt?rlkey=1ndqdpixtfhte6odhnq155tmy&st=hf53oek5&dl=0",
             "path": "embeddings/ng_deepnegative_v1_75t.pt",
             "name": "Deep Negative Embedding"
+        },
+        {
+            "url": "https://huggingface.co/Comfy-Org/Wan_2.1_ComfyUI_repackaged/resolve/main/split_files/clip_vision/clip_vision_h.safetensors",
+            "path": "clip_vision/clip_vision_h.safetensors",
+            "name": "clip_vision_h"
+        },
+        {
+            "url": "https://huggingface.co/Kijai/WanVideo_comfy_fp8_scaled/resolve/main/T2V/Wan2_2-T2V-A14B-LOW_fp8_e4m3fn_scaled_KJ.safetensors",
+            "path": "diffusion_models/Wan2_2-T2V-A14B-LOW_fp8_e4m3fn_scaled_KJ.safetensors",
+            "name": "Wan2_2-T2V-A14B-LOW_fp8_e4m3fn_scaled_KJ"
+        },
+        {
+            "url": "https://huggingface.co/Comfy-Org/Wan_2.2_ComfyUI_Repackaged/resolve/main/split_files/diffusion_models/wan2.2_animate_14B_bf16.safetensors",
+            "path": "diffusion_models/wan2.2_animate_14B_bf16.safetensors",
+            "name": "wan2.2_animate_14B_bf16"
+        },
+        {
+            "url": "https://huggingface.co/Comfy-Org/Wan_2.2_ComfyUI_Repackaged/resolve/main/split_files/diffusion_models/wan2.2_t2v_low_noise_14B_fp16.safetensors",
+            "path": "diffusion_models/wan2.2_t2v_low_noise_14B_fp16.safetensors",
+            "name": "wan2.2_t2v_low_noise_14B_fp16"
+        },
+        {
+            "url": "https://github.com/deepinsight/insightface/releases/download/v0.7/buffalo_l.zip",
+            "path": "insightface/models/buffalo_l.zip",
+            "name": "buffalo_l"
+        },
+        {
+            "url": "https://huggingface.co/h94/IP-Adapter/resolve/main/sdxl_models/ip-adapter-plus_sdxl_vit-h.safetensors",
+            "path": "ipadapter/ip-adapter-plus_sdxl_vit-h.safetensors",
+            "name": "ip-adapter-plus_sdxl_vit-h"
+        },
+        {
+            "url": "https://huggingface.co/Kutches/UncensoredV2/resolve/main/Wan22_A14B_T2V_LOW_Lightning_4steps_lora_250928_rank64_fp16.safetensors",
+            "path": "loras/Wan22_A14B_T2V_LOW_Lightning_4steps_lora_250928_rank64_fp16.safetensors",
+            "name": "Wan22_A14B_T2V_LOW_Lightning_4steps_lora_250928_rank64_fp16"
+        },
+        {
+            "url": "https://huggingface.co/Kijai/WanVideo_comfy/resolve/main/Lightx2v/lightx2v_I2V_14B_480p_cfg_step_distill_rank64_bf16.safetensors",
+            "path": "loras/lightx2v_I2V_14B_480p_cfg_step_distill_rank64_bf16.safetensors",
+            "name": "lightx2v_I2V_14B_480p_cfg_step_distill_rank64_bf16"
+        },
+        {
+            "url": "https://huggingface.co/Comfy-Org/Wan_2.2_ComfyUI_Repackaged/resolve/main/split_files/loras/wan2.2_animate_14B_relight_lora_bf16.safetensors",
+            "path": "loras/wan2.2_animate_14B_relight_lora_bf16.safetensors",
+            "name": "wan2.2_animate_14B_relight_lora_bf16"
+        },
+        {
+            "url": "https://huggingface.co/lightx2v/Wan2.2-Distill-Loras/resolve/main/wan2.2_i2v_A14b_low_noise_lora_rank64_lightx2v_4step_1022.safetensors",
+            "path": "loras/wan2.2_i2v_A14b_low_noise_lora_rank64_lightx2v_4step_1022.safetensors",
+            "name": "wan2.2_i2v_A14b_low_noise_lora_rank64_lightx2v_4step_1022"
+        },
+        {
+            "url": "https://huggingface.co/Comfy-Org/Wan_2.1_ComfyUI_repackaged/resolve/main/split_files/text_encoders/umt5_xxl_fp8_e4m3fn_scaled.safetensors",
+            "path": "text_encoders/umt5_xxl_fp8_e4m3fn_scaled.safetensors",
+            "name": "umt5_xxl_fp8_e4m3fn_scaled"
+        },
+        {
+            "url": "https://huggingface.co/Kijai/WanVideo_comfy/resolve/main/umt5-xxl-enc-bf16.safetensors",
+            "path": "text_encoders/umt5-xxl-enc-bf16.safetensors",
+            "name": "umt5-xxl-enc-bf16"
+        },
+        {
+            "url": "https://huggingface.co/lllyasviel/Annotators/resolve/main/RealESRGAN_x4plus.pth",
+            "path": "upscale_models/RealESRGAN_x4plus.pth",
+            "name": "RealESRGAN_x4plus"
+        },
+        {
+            "url": "https://huggingface.co/Comfy-Org/Wan_2.1_ComfyUI_repackaged/resolve/main/split_files/vae/wan_2.1_vae.safetensors",
+            "path": "vae/wan_2.1_vae.safetensors",
+            "name": "wan2.1_vae"
         }
     ]
 
